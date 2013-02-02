@@ -1,23 +1,18 @@
-
-    __  __      ____        __  __                            _     
-   /\ \/\ \    /\  _`\     /\ \/\ \    /'\_/`\              /' \    
-   \ \ \_\ \   \ \,\L\_\   \ \ \ \ \  /\      \    __  __  /\_, \   
-    \ \  _  \   \/_\__ \    \ \ \ \ \ \ \ \__\ \  /\ \/\ \ \/_/\ \  
-     \ \ \ \ \    /\ \L\ \   \ \ \_/ \ \ \ \_/\ \ \ \ \_/ |   \ \ \ 
-      \ \_\ \_\   \ `\____\   \ `\___/  \ \_\\ \_\ \ \___/     \ \_\
-       \/_/\/_/    \/_____/    `\/__/    \/_/ \/_/  \/__/       \/_/
-
-
-                  HAXATHON SUPREMACY VIRTUAL MACHINE v1
-                                  Usage
+                    ____  ____  ____   ____  ____    ____  
+                   |_   ||   _||_  _| |_  _||_   \  /   _| 
+                     | |__| |    \ \   / /    |   \/   |   
+                     |  __  |     \ \ / /     | |\  /| |   
+                    _| |  | |_     \ ' /     _| |_\/_| |_  
+                   |____||____|     \_/     |_____||_____| 
+                                        
+                         HAXATHON VIRTUAL MACHINE
                       endeavor@rainbowsandpwnies.com
-                               30 AUG 2012
 
 ================
 = ASSEMBLER
 ================
 
-The HSVM assembler takes at least two arguments. The first argument is the
+The HVM assembler takes at least two arguments. The first argument is the
 name of the output file. The remaining arguments are the names of source files
 to assemble and link.
 
@@ -29,21 +24,21 @@ To assemble the example program:
 
 
 ================
-= HSVM
+= HVM
 ================
 
-The program hsvm is the main hsvm interpreter. It takes as its sole argument
-the name of a hsvm program to execute.
+The program hvm is the main hvm interpreter. It takes as its sole argument
+the name of a hvm program to execute.
 
 To run the example program after assembly:
-	./hsvm helloworld
+	./hvm helloworld
 
 
 ================
 = DEBUGGER
 ================
 
-The program debugger allows you to step through and debug a hsvm process. The
+The program debugger allows you to step through and debug a hvm process. The
 available commands are:
 	- break, b
 	- continue, b
@@ -141,11 +136,11 @@ Example: s
 = DISASSEMBLER
 ================
 
-The disassembler disassembles hsvm instructions. It takes an optional argument,
+The disassembler disassembles hvm instructions. It takes an optional argument,
 specified with the -o flag, which gives an offset into the file to begin
 disassembling at.
 
-Remember, instructions and data are freely mixed in hsvm programs.
+Remember, instructions and data are freely mixed in hvm programs.
 
 To disassemble the example program:
 	./disassemble helloworld

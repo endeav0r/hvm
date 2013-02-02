@@ -183,7 +183,7 @@ uint8_t vm_opcode (struct _vm * vm)
     return ins->opcode;
 }
 
-#define RREG(XX) (vm->regs[ins->operand_XX % 0x8])
+#define RREG(XX) (vm->regs[ins->XX % 0x8])
 int vm_step (struct _vm * vm)
 {
     const struct _instruction * ins;
@@ -196,22 +196,22 @@ int vm_step (struct _vm * vm)
     vm->regs[REG_IP] += 4;
 
     switch (ins->opcode) {
-    case OP_ADD     : RREG(0) = RREG(1) + RREG(2); break;
-    case OP_SUB     : RREG(0) = RREG(1) - RREG(2); break;
-    case OP_MUL     : RREG(0) = RREG(1) * RREG(2); break;
-    case OP_DIV     : RREG(0) = RREG(1) / RREG(2); break;
-    case OP_MOD     : RREG(0) = RREG(1) % RREG(2); break;
-    case OP_AND     : RREG(0) = RREG(1) & RREG(2); break;
-    case OP_OR      : RREG(0) = RREG(1) | RREG(2); break;
-    case OP_XOR     : RREG(0) = RREG(1) ^ RREG(2); break;
-    case OP_ADDLVAL : RREG(0) += ntohs(ins->lval); break;
-    case OP_SUBLVAL : RREG(0) -= ntohs(ins->lval); break;
-    case OP_MULLVAL : RREG(0) *= ntohs(ins->lval); break;
-    case OP_DIVLVAL : RREG(0) /= ntohs(ins->lval); break;
-    case OP_MODLVAL : RREG(0) %= ntohs(ins->lval); break;
-    case OP_ANDLVAL : RREG(0) &= ntohs(ins->lval); break;
-    case OP_ORLVAL  : RREG(0) |= ntohs(ins->lval); break;
-    case OP_XORLVAL : RREG(0) ^= ntohs(ins->lval); break;
+    case OP_ADD     : RREG(operand_0) = RREG(operand_1) + RREG(operand_2); break;
+    case OP_SUB     : RREG(operand_0) = RREG(operand_1) - RREG(operand_2); break;
+    case OP_MUL     : RREG(operand_0) = RREG(operand_1) * RREG(operand_2); break;
+    case OP_DIV     : RREG(operand_0) = RREG(operand_1) / RREG(operand_2); break;
+    case OP_MOD     : RREG(operand_0) = RREG(operand_1) % RREG(operand_2); break;
+    case OP_AND     : RREG(operand_0) = RREG(operand_1) & RREG(operand_2); break;
+    case OP_OR      : RREG(operand_0) = RREG(operand_1) | RREG(operand_2); break;
+    case OP_XOR     : RREG(operand_0) = RREG(operand_1) ^ RREG(operand_2); break;
+    case OP_ADDLVAL : RREG(operand_0) += ntohs(ins->lval); break;
+    case OP_SUBLVAL : RREG(operand_0) -= ntohs(ins->lval); break;
+    case OP_MULLVAL : RREG(operand_0) *= ntohs(ins->lval); break;
+    case OP_DIVLVAL : RREG(operand_0) /= ntohs(ins->lval); break;
+    case OP_MODLVAL : RREG(operand_0) %= ntohs(ins->lval); break;
+    case OP_ANDLVAL : RREG(operand_0) &= ntohs(ins->lval); break;
+    case OP_ORLVAL  : RREG(operand_0) |= ntohs(ins->lval); break;
+    case OP_XORLVAL : RREG(operand_0) ^= ntohs(ins->lval); break;
 
     case OP_JMP : vm->regs[REG_IP] += ntohs(ins->lval); break;
     case OP_JE  : if (vm->flags == 0) vm->regs[REG_IP] += ntohs(ins->lval); break;
@@ -238,32 +238,32 @@ int vm_step (struct _vm * vm)
         break;
     case OP_LOAD :
         memcpy(&tmp, &(vm->mem[ntohs(ins->lval)]), 2);
-        RREG(0) = ntohs(tmp);
+        RREG(operand_0) = ntohs(tmp);
         break;
     case OP_LOADR :
-        memcpy(&tmp, &(vm->mem[RREG(1)]), 2);
-        RREG(0) = ntohs(tmp);
+        memcpy(&tmp, &(vm->mem[RREG(operand_1)]), 2);
+        RREG(operand_0) = ntohs(tmp);
         break;
     case OP_STOR :
-        tmp = htons(RREG(0));
+        tmp = htons(RREG(operand_0));
         memcpy(&(vm->mem[ntohs(ins->lval)]), &tmp, 2);
         break;
     case OP_STORR :
-        tmp = htons(RREG(1));
-        memcpy(&(vm->mem[vm->regs[RREG(0)]]), &tmp, 2);
+        tmp = htons(RREG(operand_1));
+        memcpy(&(vm->mem[vm->regs[RREG(operand_0)]]), &tmp, 2);
         break;
-    case OP_LOADB  : RREG(0) = vm->mem[ntohs(ins->lval)]; break;
-    case OP_LOADBR : RREG(0) = vm->mem[RREG(1)]; break;
-    case OP_STORB  : vm->mem[ins->lval] = RREG(0) & 0xff; break;
-    case OP_STORBR : vm->mem[RREG(0)] = RREG(1) & 0xff; break;
-    case OP_IN     : RREG(0) = getchar(); break;
+    case OP_LOADB  : RREG(operand_0) = vm->mem[ntohs(ins->lval)]; break;
+    case OP_LOADBR : RREG(operand_0) = vm->mem[RREG(operand_1)]; break;
+    case OP_STORB  : vm->mem[ins->lval] = RREG(operand_0) & 0xff; break;
+    case OP_STORBR : vm->mem[RREG(operand_0)] = RREG(operand_1) & 0xff; break;
+    case OP_IN     : RREG(operand_0) = getchar(); break;
     case OP_OUT :
-        putchar(RREG(0));
+        putchar(RREG(operand_0));
         fflush(stdout);
         break;
     case OP_PUSH :
         vm->regs[REG_SP] -= 2;
-        tmp = htons(RREG(0));
+        tmp = htons(RREG(operand_0));
         memcpy(&(vm->mem[vm->regs[REG_SP]]), &tmp, 2);
         break;
     case OP_PUSHLVAL :
@@ -273,13 +273,13 @@ int vm_step (struct _vm * vm)
         break;
     case OP_POP :
         memcpy(&tmp, &(vm->mem[vm->regs[REG_SP]]), 2);
-        RREG(0) = ntohs(tmp);
+        RREG(operand_0) = ntohs(tmp);
         vm->regs[REG_SP] += 2;
         break;
-    case OP_MOV     : RREG(0) = RREG(1); break;
-    case OP_MOVLVAL : RREG(0) = ntohs(ins->lval); break;
-    case OP_CMP     : vm->flags = RREG(0) - RREG(1); break;
-    case OP_CMPLVAL : vm->flags = RREG(0) - ntohs(ins->lval); break;
+    case OP_MOV     : RREG(operand_0) = RREG(operand_1); break;
+    case OP_MOVLVAL : RREG(operand_0) = ntohs(ins->lval); break;
+    case OP_CMP     : vm->flags = RREG(operand_0) - RREG(operand_1); break;
+    case OP_CMPLVAL : vm->flags = RREG(operand_0) - ntohs(ins->lval); break;
     case OP_HLT     : vm->halted = 1; return VM_HALTED;
     case OP_SYSCALL : vm_syscall(vm); break;
     case OP_NOP     : break;
